@@ -8,7 +8,7 @@ import {
   } from "@mui/material";
   import { useEffect, useState } from "react";
   import { useLocation, useNavigate } from "react-router-dom";
-  import { useGetCategoryPostsQuery } from "../redux/posts/postsApi";
+  import { useGetCategoryPostsQuery } from "../redux/posts/postsApi"; // Ensure this import is correct
   import PostCard from "../components/PostCard";
   
   const CategoryPage = () => {
@@ -60,6 +60,9 @@ import {
         )}
         {categoryPostData && categoryPostData.posts && (
           <>
+            <Typography variant="h4" sx={{ mb: "20px", textAlign: "center" }}>
+              {category}
+            </Typography>
             <Grid container spacing={3}>
               {categoryPostData.posts.map((post) => (
                 <Grid item key={post._id} xs={12} sm={6} lg={3}>

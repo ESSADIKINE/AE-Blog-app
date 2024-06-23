@@ -1,5 +1,5 @@
-import { api } from "../api"
-const POSTS_URL = "/api/posts"
+import { api } from "../api";
+const POSTS_URL = "/api/posts";
 
 export const postsApi = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -83,8 +83,28 @@ export const postsApi = api.injectEndpoints({
                 method: "GET"
             }),
             providesTags: ["Posts"]
-        })
+        }),
+        getCategoryPosts: builder.query({
+            query: ({ category, page }) => ({
+                url: `${POSTS_URL}/category`,
+                method: "GET",
+                params: { category, page }
+            }),
+            providesTags: ["Posts"]
+        }),
     })
-})
+});
 
-export const { useCreatePostMutation, useGetPostQuery, useGetUserPostsQuery, useDeletePostMutation, useUpdatePostMutation, useGetAllPostsQuery, useGetRecentPostsQuery, useGetSearchPostsQuery, useGetPopularPostsQuery, useGetTotalNumberOfPostsQuery } = postsApi
+export const { 
+    useCreatePostMutation, 
+    useGetPostQuery, 
+    useGetUserPostsQuery, 
+    useDeletePostMutation, 
+    useUpdatePostMutation, 
+    useGetAllPostsQuery, 
+    useGetRecentPostsQuery, 
+    useGetSearchPostsQuery, 
+    useGetPopularPostsQuery, 
+    useGetTotalNumberOfPostsQuery, 
+    useGetCategoryPostsQuery // Add this line
+} = postsApi;

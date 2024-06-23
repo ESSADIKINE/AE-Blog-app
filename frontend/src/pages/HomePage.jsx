@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, CircularProgress, Container, Grid, Paper, Typography, Toolbar, Link } from "@mui/material";
+import { Box, CircularProgress, Container, Grid, Paper, Typography, Toolbar } from "@mui/material";
+import { Link } from "react-router-dom"; // Updated import
 import { useGetPopularPostsQuery, useGetRecentPostsQuery } from "../redux/posts/postsApi";
 import PostCard from "../components/PostCard";
 import { categories } from "../utils/constants";
@@ -32,12 +33,9 @@ const HomePage = () => {
       >
         {categories.map((section) => (
           <Link
-            color="inherit"
-            noWrap
+            style={{ textDecoration: 'none', color: 'inherit' }}
             key={section.name}
-            variant="body2"
-            href={`search?category=${section.urlName}`}
-            sx={{ flexShrink: 0 }}
+            to={`/category?category=${section.urlName}`} // Updated for navigation
           >
             {section.name}
           </Link>
@@ -80,7 +78,7 @@ const HomePage = () => {
               <Typography variant="h5" color="inherit" sx={{ mb: 5 }} paragraph>
                 Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.
               </Typography>
-              <Link variant="subtitle1" href="#" sx={{ pl: 4 }}>
+              <Link to="#" style={{ pl: 4, textDecoration: 'none', color: 'inherit' }}>
                 Continue reading…
               </Link>
             </Box>
