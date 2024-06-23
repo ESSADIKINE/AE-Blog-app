@@ -216,6 +216,35 @@ export const getSearchPosts = async (req, res) => {
     }
 }
 
+export const getCategoryPosts = async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1; // Default to page 1
+      const pageSize = parseInt(req.query.pageSize) || 8; // Default to 8 posts per page
+      const sort = req.query.sort === "asc" ? 1 : -1; // Default to descending order if not specified
+      const skip = (page - 1) * pageSize;
+      const { category } = req.query;
+  
+      // Ensure category is provided
+      if (!category) {
+        return res.status(400).json({ error: "Category is required." });
+      }
+  
+      // Fetch posts by category with pagination and sorting
+      const posts = await Post.find({ category })
+        .skip(skip)
+        .limit(pageSize)
+        .sort({ createdAt: sort });
+  
+      // Get the total count of posts in this category
+      const totalPosts = await Post.countDocuments({ category });
+  
+      res.status(200).json({ posts, totalPosts });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: error.message });
+    }
+  };
+
 export const getPopularPosts = async (req, res) => {
     try {
         const posts = await Post.find().sort({ views: -1 }).limit(8)

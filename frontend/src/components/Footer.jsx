@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Link, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import blogLogoGif from '../utils/Logo.gif';
 
@@ -28,44 +28,35 @@ const Footer = ({ categories, portfolio, gmail, linkedin, github }) => {
         </Grid>
         <Grid item xs={12} md={3}>
           {categories.slice(0, 3).map((section) => (
-            <Link
-              color="inherit"
-              noWrap
+            <RouterLink
+              style={{ textDecoration: 'none', color: 'inherit', display: 'block', marginBottom: '8px' }}
               key={section.name}
-              variant="body2"
-              href={`search?category=${section.urlName}`}
-              sx={{ display: 'block', mb: 1 }}
+              to={`/category?category=${section.urlName}`}
             >
               {section.name}
-            </Link>
+            </RouterLink>
           ))}
         </Grid>
         <Grid item xs={12} md={3}>
           {categories.slice(3, 6).map((section) => (
-            <Link
-              color="inherit"
-              noWrap
+            <RouterLink
+              style={{ textDecoration: 'none', color: 'inherit', display: 'block', marginBottom: '8px' }}
               key={section.name}
-              variant="body2"
-              href={`search?category=${section.urlName}`}
-              sx={{ display: 'block', mb: 1 }}
+              to={`/category?category=${section.urlName}`}
             >
               {section.name}
-            </Link>
+            </RouterLink>
           ))}
         </Grid>
         <Grid item xs={12} md={3}>
           {categories.slice(6, 9).map((section) => (
-            <Link
-              color="inherit"
-              noWrap
+            <RouterLink
+              style={{ textDecoration: 'none', color: 'inherit', display: 'block', marginBottom: '8px' }}
               key={section.name}
-              variant="body2"
-              href={`search?category=${section.urlName}`}
-              sx={{ display: 'block', mb: 1 }}
+              to={`/category?category=${section.urlName}`}
             >
               {section.name}
-            </Link>
+            </RouterLink>
           ))}
         </Grid>
       </Grid>
