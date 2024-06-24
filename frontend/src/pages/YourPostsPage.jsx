@@ -28,14 +28,14 @@ const YourPostsPage = () => {
 
     return (
         <>
-            <Container maxWidth={"lg"} sx={{ mt: "40px", mb: "10px" }}>
+            <Container maxWidth={"lg"} sx={{ mt: "40px", mb: "10px", height: '50vh' }}>
                 {isLoading && (
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                         <CircularProgress size={24} />
                     </Box>
                 )}
                 {!isLoading && data && data.posts.length === 0 && (
-                    <Typography variant="h5" textAlign={"center"}>
+                    <Typography variant="h5" textAlign={"center"} >
                         You haven't created any post yet.
                     </Typography>
                 )}

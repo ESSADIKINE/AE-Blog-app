@@ -68,12 +68,11 @@ const HomePage = () => {
               }}
             >
               <Typography component="h1" variant="h3" color="inherit" sx={{ mb: 5 }} gutterBottom>
-                Title of a longer featured blog post
+                Welcome to the Anass Essadikine Blog
               </Typography>
               <Typography variant="h5" color="inherit" sx={{ mb: 5 }} paragraph>
-                Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.
-              </Typography>
-              <Link to="#" style={{ pl: 4, textDecoration: 'none', color: 'inherit' }}>
+                A place for exploring new ideas and insights. Discover engaging articles on a wide range of topics.</Typography>
+              <Link to="#" style={{ pl: 4, textDecoration: 'none', color: '#009975' }}>
                 Continue reading…
               </Link>
             </Box>
@@ -115,7 +114,7 @@ const HomePage = () => {
           </>
         )}
         {!isRecentPostsLoading && recentPostData?.length === 0 && (
-          <Typography variant="h5" textAlign="center">
+          <Typography variant="h5" textAlign="center" py={7}>
             There are no recent posts yet.
           </Typography>
         )}
@@ -147,7 +146,7 @@ const HomePage = () => {
           </>
         )}
         {!isPopularPostsLoading && popularPostData?.length === 0 && (
-          <Typography variant="h5" textAlign="center">
+          <Typography variant="h5" textAlign="center" py={7}>
             There are no popular posts yet.
           </Typography>
         )}
