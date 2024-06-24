@@ -12,6 +12,8 @@ import formatCategory from "../utils/formatCategory"
 import Comment from "../components/Comment"
 import { useCreateCommentMutation, useGetPostCommentsQuery } from "../redux/comments/commentsApi"
 import { useTheme } from "@emotion/react"
+import Footer from "../components/Footer";
+
 
 const PostPage = () => {
     const { user } = useSelector((state) => state.user)
@@ -31,10 +33,10 @@ const PostPage = () => {
     const { data, isLoading } = useGetPostQuery(slug)
 
     // get user
-    const { data: userData } = useGetUserQuery({ userId: data?.userId}, { skip: !data?.userId})
+    const { data: userData } = useGetUserQuery({ userId: data?.userId }, { skip: !data?.userId })
 
     // delete post
-    const [ deletePostApi, { isLoading: isDeletePostLoading } ] = useDeletePostMutation()
+    const [deletePostApi, { isLoading: isDeletePostLoading }] = useDeletePostMutation()
 
     const handleDeletePost = async () => {
         try {
@@ -42,9 +44,9 @@ const PostPage = () => {
 
             toast.success("Post has been successfully deleted.")
             navigate("/your-posts")
-            
-        } catch(error) {
-            if(error.data) {
+
+        } catch (error) {
+            if (error.data) {
                 toast.error(error.data.error)
                 return
             } else {
@@ -55,14 +57,14 @@ const PostPage = () => {
     }
 
     // create comment
-    const [ createCommentApi, { isLoading: isCreateCommentLoading } ] = useCreateCommentMutation()
+    const [createCommentApi, { isLoading: isCreateCommentLoading }] = useCreateCommentMutation()
 
     // get post comments
     const { data: postCommentsData, isLoading: isPostCommentsLoading } = useGetPostCommentsQuery({ postId: data?._id }, { skip: !data?._id })
 
     const handleCreateComment = async (e) => {
         e.preventDefault()
-        if(!user) {
+        if (!user) {
             toast.error("You are not authorized to create a comment.")
             return
         }
@@ -71,9 +73,9 @@ const PostPage = () => {
 
             toast.success("Comment has been created successfully.")
             setComment("")
-            
-        } catch(error) {
-            if(error.data) {
+
+        } catch (error) {
+            if (error.data) {
                 toast.error(error.data.error)
                 return
             } else {
@@ -85,10 +87,10 @@ const PostPage = () => {
 
     return (
         <>
-            <Container maxWidth={"sm"} sx={{ mt: "50px", pb: "30px"}}>
+            <Container maxWidth={"sm"} sx={{ mt: "50px", pb: "30px" }}>
                 {isLoading && (
                     <Box display={"flex"} justifyContent={"center"}>
-                        <CircularProgress size={24}/>
+                        <CircularProgress size={24} />
                     </Box>
                 )}
                 {!isLoading && !data && (
@@ -99,47 +101,47 @@ const PostPage = () => {
                 {data && (
                     <>
                         <Box>
-                            <Typography sx={{ fontSize: { xs: "21px", sm: "26px"}, mb: "8px"}} fontWeight={"bold"}>
+                            <Typography sx={{ fontSize: { xs: "21px", sm: "26px" }, mb: "8px" }} fontWeight={"bold"}>
                                 {data.title}
                             </Typography>
                             {data.postPicture && (
-                                <img src={data.postPicture} style={{ width: "100%", borderRadius: "8px", overflow: "hidden"}}/>
+                                <img src={data.postPicture} style={{ width: "100%", borderRadius: "8px", overflow: "hidden" }} />
                             )}
                             {user?._id === data.userId && (
                                 <Stack flexDirection={"row"} alignItems={"center"} gap={2} justifyContent={"flex-end"}>
                                     <Link to={`/update-post/${data._id}`}>
-                                        <IconButton sx={{ color: "#00897b"}}>
+                                        <IconButton sx={{ color: "#00897b" }}>
                                             <EditIcon />
                                         </IconButton>
                                     </Link>
-                                    <IconButton onClick={handleOpen} sx={{ color: "#d32f2f"}}>
+                                    <IconButton onClick={handleOpen} sx={{ color: "#d32f2f" }}>
                                         <DeleteIcon />
                                     </IconButton>
-                                    <DeletePostModal open={open} handleClose={handleClose} isLoading={isDeletePostLoading} handleDeletePost={handleDeletePost}/>
+                                    <DeletePostModal open={open} handleClose={handleClose} isLoading={isDeletePostLoading} handleDeletePost={handleDeletePost} />
                                 </Stack>
                             )}
                             {userData && (
                                 <Box my={"10px"} px={1}>
                                     <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
                                         <Stack flexDirection={"row"} alignItems={"center"} gap={2}>
-                                            <Avatar src={userData.profilePicture} sx={{ width: { xs: 42, sm: 52 }, height: { xs: 42, sm: 52 }}}/>
-                                            <Typography sx={{ fontSize: { xs: "14px", sm: "17px"}}}>
+                                            <Avatar src={userData.profilePicture} sx={{ width: { xs: 42, sm: 52 }, height: { xs: 42, sm: 52 } }} />
+                                            <Typography sx={{ fontSize: { xs: "14px", sm: "17px" } }}>
                                                 {userData.fullName}
                                             </Typography>
                                         </Stack>
-                                        <Typography sx={{ fontSize: { xs: "14px", sm: "17px"}}}>
+                                        <Typography sx={{ fontSize: { xs: "14px", sm: "17px" } }}>
                                             {new Date(data.createdAt).toLocaleDateString()}
                                         </Typography>
                                     </Stack>
                                 </Box>
                             )}
-                            <Stack flexDirection={"row"} alignItems={"center"} gap={2} sx={{ mt: "20px", px: 1}}>
+                            <Stack flexDirection={"row"} alignItems={"center"} gap={2} sx={{ mt: "20px", px: 1 }}>
                                 <Typography>Category:</Typography>
-                                <Box sx={{ backgroundColor: "#311b92", p: 1, borderRadius: "9999px", color: "#ffffff"}}>
+                                <Box sx={{ backgroundColor: "#311b92", p: 1, borderRadius: "9999px", color: "#ffffff" }}>
                                     {formatCategory(data.category)}
                                 </Box>
                             </Stack>
-                            <Typography sx={{ px: "8px", mt: "20px"}}>
+                            <Typography sx={{ px: "8px", mt: "20px" }}>
                                 {data.desc}
                             </Typography>
                         </Box>
@@ -148,7 +150,7 @@ const PostPage = () => {
                                 Comments: {postCommentsData?.length}
                             </Typography>
                             <Stack onSubmit={handleCreateComment} component={"form"} flexDirection={"row"} alignItems={"center"} gap={2}>
-                                <TextField 
+                                <TextField
                                     type="text"
                                     variant="standard"
                                     fullWidth
@@ -164,12 +166,12 @@ const PostPage = () => {
                                     width: "110px",
                                     height: "38px"
                                 }}>
-                                    {isCreateCommentLoading ? <CircularProgress size={24} sx={{ color: "#ffffff"}}/> : "Comment"}
+                                    {isCreateCommentLoading ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Comment"}
                                 </Button>
                             </Stack>
                             {isPostCommentsLoading && (
                                 <Box display={"flex"} justifyContent={"center"}>
-                                    <CircularProgress size={24}/>
+                                    <CircularProgress size={24} />
                                 </Box>
                             )}
                             {!isPostCommentsLoading && postCommentsData?.length === 0 && (
@@ -180,15 +182,16 @@ const PostPage = () => {
                             {postCommentsData && (
                                 <Stack gap={3} mt={"20px"}>
                                     {postCommentsData.map((c) => (
-                                        <Comment key={c._id} comment={c}/>
+                                        <Comment key={c._id} comment={c} />
                                     ))}
                                 </Stack>
                             )}
                         </Box>
                     </>
-                    
+
                 )}
             </Container>
+            <Footer />
         </>
     )
 }

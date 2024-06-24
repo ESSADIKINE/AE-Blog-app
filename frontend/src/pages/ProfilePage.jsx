@@ -8,6 +8,8 @@ import { deleteUserAccount, signOut, updateUserProfile } from "../redux/user/use
 import usePreviewImg from "../hooks/usePreviewImg"
 import { useSignoutMutation } from "../redux/user/authApi"
 import DeleteAccountModal from "../components/DeleteAccountModal"
+import Footer from "../components/Footer";
+
 
 const ProfilePage = () => {
     const theme = useTheme()
@@ -73,124 +75,124 @@ const ProfilePage = () => {
     }
 
     return (
-        <Grid container component="main" sx={{ height: '93vh' }}>
-            <CssBaseline />
-            <Grid
-                item
-                xs={false}
-                sm={4}
-                md={4}
-                sx={{
-                    backgroundImage: 'url(https://source.unsplash.com/random?left)',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundColor: (t) =>
-                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
-            />
-            <Grid
-                item
-                xs={12}
-                sm={4}
-                md={4}
-                component={Paper}
-                elevation={6}
-                square
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Container maxWidth="xl">
-                    <Typography component="h1" variant="h5" textAlign="center" sx={{ mb: "14px" }}>
-                        Update Profile
-                    </Typography>
-                    <Stack onSubmit={handleUpdateProfile} component="form" gap={3} width="100%">
-                        <Stack flexDirection="row" alignItems="center" gap={4}>
-                            <Avatar src={previewImg || user.profilePicture} sx={{ width: 64, height: 64 }} />
-                            <input type="file" hidden ref={profilePictureRef} onChange={handleImgChange} />
-                            <Button onClick={() => profilePictureRef.current.click()} variant="contained">
-                                Change Avatar
-                            </Button>
-                        </Stack>
-                        <TextField
-                            required
-                            fullWidth
-                            id="fullName"
-                            label="Full Name"
-                            name="fullName"
-                            autoComplete="off"
-                            value={inputs.fullName}
-                            onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
-                        />
-                        <TextField
-                            required
-                            fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            autoComplete="off"
-                            value={inputs.username}
-                            onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
-                        />
-                        <TextField
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            value={inputs.email}
-                            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
-                        />
-                        <FormControl required fullWidth>
-                            <InputLabel>Password</InputLabel>
-                            <OutlinedInput
-                                type="password"
-                                label="Password"
-                                value={inputs.password}
-                                onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+            <Grid container component="main" sx={{ height: '93vh' }}>
+                <CssBaseline />
+                <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={4}
+                    sx={{
+                        backgroundImage: 'url(../../profilLEFT.png)',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: (t) =>
+                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                />
+                <Grid
+                    item
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    component={Paper}
+                    elevation={6}
+                    square
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Container maxWidth="xl">
+                        <Typography component="h1" variant="h5" textAlign="center" sx={{ mb: "14px" }}>
+                            Update Profile
+                        </Typography>
+                        <Stack onSubmit={handleUpdateProfile} component="form" gap={3} width="100%">
+                            <Stack flexDirection="row" alignItems="center" gap={4}>
+                                <Avatar src={previewImg || user.profilePicture} sx={{ width: 64, height: 64 }} />
+                                <input type="file" hidden ref={profilePictureRef} onChange={handleImgChange} />
+                                <Button onClick={() => profilePictureRef.current.click()} variant="contained">
+                                    Change Avatar
+                                </Button>
+                            </Stack>
+                            <TextField
+                                required
+                                fullWidth
+                                id="fullName"
+                                label="Full Name"
+                                name="fullName"
+                                autoComplete="off"
+                                value={inputs.fullName}
+                                onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
                             />
-                        </FormControl>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            disabled={isLoading}
-                            sx={{ mt: 3, mb: 2, "&.Mui-disabled": { backgroundColor: theme.palette.primary.main } }}
-                        >
-                            {isLoading ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Update Profile"}
-                        </Button>
-                        <Stack flexDirection="row" justifyContent="space-between" px={1}>
-                            <Box onClick={handleOpen} sx={{ color: "#d32f2f", cursor: "pointer", mt: "2px" }}>
-                                Delete Account
-                            </Box>
-                            <DeleteAccountModal open={openDeleteModal} handleClose={handleClose} handleDeleteUserAccount={handleDeleteUserAccount} isLoading={isDeleteUserAccountLoading} />
-                            <Box onClick={handleSignOut} sx={{ color: "#d32f2f", cursor: "pointer", mt: "5px" }}>
-                                Sign Out
-                            </Box>
+                            <TextField
+                                required
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                autoComplete="off"
+                                value={inputs.username}
+                                onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+                            />
+                            <TextField
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                value={inputs.email}
+                                onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+                            />
+                            <FormControl required fullWidth>
+                                <InputLabel>Password</InputLabel>
+                                <OutlinedInput
+                                    type="password"
+                                    label="Password"
+                                    value={inputs.password}
+                                    onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+                                />
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                disabled={isLoading}
+                                sx={{ mt: 3, mb: 2, "&.Mui-disabled": { backgroundColor: theme.palette.primary.main } }}
+                            >
+                                {isLoading ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Update Profile"}
+                            </Button>
+                            <Stack flexDirection="row" justifyContent="space-between" px={1}>
+                                <Box onClick={handleOpen} sx={{ color: "#d32f2f", cursor: "pointer", mt: "2px" }}>
+                                    Delete Account
+                                </Box>
+                                <DeleteAccountModal open={openDeleteModal} handleClose={handleClose} handleDeleteUserAccount={handleDeleteUserAccount} isLoading={isDeleteUserAccountLoading} />
+                                <Box onClick={handleSignOut} sx={{ color: "#d32f2f", cursor: "pointer", mt: "5px" }}>
+                                    Sign Out
+                                </Box>
+                            </Stack>
                         </Stack>
-                    </Stack>
-                </Container>
+                    </Container>
+                </Grid>
+                <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={4}
+                    sx={{
+                        backgroundImage: 'url(../../profilRIGHT.png)',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: (t) =>
+                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                />
             </Grid>
-            <Grid
-                item
-                xs={false}
-                sm={4}
-                md={4}
-                sx={{
-                    backgroundImage: 'url(https://source.unsplash.com/random?right)',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundColor: (t) =>
-                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
-            />
-        </Grid>
     )
 }
 

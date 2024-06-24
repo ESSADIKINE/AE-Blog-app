@@ -62,7 +62,7 @@ const CreatePostPage = () => {
                 sm={4}
                 md={4}
                 sx={{
-                    backgroundImage: 'url(https://source.unsplash.com/random?left)',
+                    backgroundImage: 'url(../../imageLEFT.png)',
                     backgroundRepeat: 'no-repeat',
                     backgroundColor: (t) =>
                         t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -169,7 +169,7 @@ const CreatePostPage = () => {
                 sm={4}
                 md={4}
                 sx={{
-                    backgroundImage: 'url(https://source.unsplash.com/random?right)',
+                    backgroundImage: 'url(../../imageRight.png)',
                     backgroundRepeat: 'no-repeat',
                     backgroundColor: (t) =>
                         t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],

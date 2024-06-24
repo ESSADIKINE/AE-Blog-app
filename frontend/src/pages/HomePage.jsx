@@ -19,11 +19,6 @@ const HomePage = () => {
     imageText: 'main image description'
   };
 
-  const portfolio = '../../portfolio.png'; // Placeholder path for the Twitter icon
-  const gmail = '../../gmail.png'; // Placeholder path for the Instagram icon
-  const linkedin = '../../linkedin.png'; // Placeholder path for the LinkedIn icon
-  const github = '../../github.png'; // Placeholder path for the GitHub icon
-
   return (
     <>
       <Toolbar
@@ -157,13 +152,7 @@ const HomePage = () => {
           </Typography>
         )}
       </Container>
-      <Footer
-        categories={categories}
-        portfolio={portfolio}
-        gmail={gmail}
-        linkedin={linkedin}
-        github={github}
-      />
+      <Footer />
     </>
   );
 };

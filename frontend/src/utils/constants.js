@@ -1,39 +1,39 @@
 export const categories = [
     {
-        name: "Nature",
-        urlName: "nature"
+        name: "Biography",
+        urlName: "Biography"
     },
     {
         name: "Politics",
-        urlName: "politics"
+        urlName: "Politics"
     },
     {
         name: "Travel",
-        urlName: "travel"
+        urlName: "Travel"
     },
     {
         name: "Animals",
-        urlName: "animals"
+        urlName: "Animals"
     },
     {
         name: "Sports",
-        urlName: "sports"
+        urlName: "Sports"
     },
     {
         name: "Business & Work",
-        urlName: "business-work"
+        urlName: "Business-Work"
     },
     {
         name: "Food & Drink",
-        urlName: "food-drink"
+        urlName: "Food-Drink"
     },
     {
         name: "Health & Wellness",
-        urlName: "health-wellness"
+        urlName: "Health-Wellness"
     },
     {
         name: "Technology",
-        urlName: "technology"
+        urlName: "Technology"
     },
 ]
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Box, Grid, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { categories } from "../utils/constants";
 import blogLogoGif from '../utils/Logo.gif';
 
-const Footer = ({ categories, portfolio, gmail, linkedin, github }) => {
+const Footer = () => {
   return (
     <Box component="footer" sx={{ py: 3, px: 30, mt: 'auto', backgroundColor: 'background.paper' }}>
       <Grid container spacing={2}>
@@ -13,16 +14,16 @@ const Footer = ({ categories, portfolio, gmail, linkedin, github }) => {
           </RouterLink>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }} style={{ width: '160px', marginBottom: '10px' }}>
             <Grid item component="a" href="https://portfolio.com" rel="noopener noreferrer" target="_blank">
-              <img alt="portfolio logo" src={portfolio} style={{ width: '24px', height: '24px', marginRight: '10px' }} />
+              <img alt="portfolio logo" src='../../portfolio.png' style={{ width: '24px', height: '24px', marginRight: '10px' }} />
             </Grid>
             <Grid item component="a" href="https://www.gmail.com" rel="noopener noreferrer" target="_blank">
-              <img alt="gmail logo" src={gmail} style={{ width: '24px', height: '24px', marginRight: '10px' }} />
+              <img alt="gmail logo" src='../../gmail.png' style={{ width: '24px', height: '24px', marginRight: '10px' }} />
             </Grid>
             <Grid item component="a" href="https://www.linkedin.com" rel="noopener noreferrer" target="_blank">
-              <img alt="linkedin logo" src={linkedin} style={{ width: '24px', height: '24px', marginRight: '10px' }} />
+              <img alt="linkedin logo" src='../../linkedin.png' style={{ width: '24px', height: '24px', marginRight: '10px' }} />
             </Grid>
             <Grid item component="a" href="https://www.github.com" rel="noopener noreferrer" target="_blank">
-              <img alt="github logo" src={github} style={{ width: '24px', height: '24px', marginRight: '10px' }} />
+              <img alt="github logo" src='../../github.png' style={{ width: '24px', height: '24px', marginRight: '10px' }} />
             </Grid>
           </Box>
         </Grid>

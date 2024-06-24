@@ -1,8 +1,7 @@
 import { useTheme } from "@emotion/react"
-import { Avatar, Box, Button, CircularProgress, Container, IconButton, Link, Menu, MenuItem, Stack, Tooltip } from "@mui/material"
+import { Avatar, Box, Button, CircularProgress, Container, IconButton, Menu, MenuItem, Stack, Tooltip } from "@mui/material"
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
-import PostAddIcon from '@mui/icons-material/PostAdd'
 import SearchIcon from '@mui/icons-material/Search'
 import { useDispatch, useSelector } from "react-redux"
 import { Link as RouterLink, useLocation } from "react-router-dom"

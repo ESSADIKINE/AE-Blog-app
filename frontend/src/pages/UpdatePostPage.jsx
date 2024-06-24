@@ -66,7 +66,7 @@ const UpdatePostPage = () => {
                 sm={4}
                 md={4}
                 sx={{
-                    backgroundImage: 'url(https://source.unsplash.com/random?left)',
+                    backgroundImage: 'url(../../imageLEFT1.png)',
                     backgroundRepeat: 'no-repeat',
                     backgroundColor: (t) =>
                         t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -90,7 +90,7 @@ const UpdatePostPage = () => {
                 }}
             >
                 <Container maxWidth="xs">
-                    <Typography component="h1" variant="h5" textAlign="center" sx={{ mb: "14px" }}>
+                    <Typography component="h1" variant="h5" textAlign="center" sx={{ m: "14px" }}>
                         Update Post
                     </Typography>
                     <Stack onSubmit={handleUpdatePost} component="form" gap={3}>
@@ -162,7 +162,8 @@ const UpdatePostPage = () => {
                         <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{
                             "&.Mui-disabled": {
                                 backgroundColor: theme.palette.primary.main
-                            }
+                            },
+                            my:2
                         }}>
                             {isLoading ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Update Post"}
                         </Button>
@@ -175,7 +176,7 @@ const UpdatePostPage = () => {
                 sm={4}
                 md={4}
                 sx={{
-                    backgroundImage: 'url(https://source.unsplash.com/random?right)',
+                    backgroundImage: 'url(../../imageRIGHT1.png)',
                     backgroundRepeat: 'no-repeat',
                     backgroundColor: (t) =>
                         t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
