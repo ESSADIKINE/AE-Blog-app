@@ -10,36 +10,35 @@ const PostCard = ({ post }) => {
     if (!userData) return null;
 
     return (
-        <Card sx={{ maxWidth: "440px" }} elevation={2}>
-            <Link to={`/post/${post.slug}`}>
+        <Link to={`/post/${post.slug}`} style={{ textDecoration: 'none' }}>
+            <Card sx={{ maxWidth: "440px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }} elevation={2}>
                 <CardMedia
-                    component={"img"}
+                    component="img"
                     image={post.postPicture}
-                    height={"200"}
+                    height="200"
                 />
-            </Link>
-            <CardContent>
-                <div className="p-0 m-0"><Box fontSize={"12px"} sx={{ backgroundColor: "#009975", py: 0, px: 2, borderRadius: "9999px", display: "inline-block", fontWeight: "bold" }}>
-                    {formatCategory(post.category)}
-                </Box></div>
-                <Typography fontSize={"14px"} sx={{p: 1, display:"inline", fontWeight: "bold" }} noWrap>
-                    {post.title}
-                </Typography>
-                <Typography fontSize={"12px"} noWrap>
-                    {post.desc}
-                </Typography>
-
-            </CardContent>
-            <CardHeader
-                avatar={
-                    <Avatar
-                        src={userData.profilePicture}
-                        sx={{ width: 35, height: 35, border: '2px solid white', boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)' }}
-                    />
-                }
-                title={userData.fullName}
-            />
-        </Card>
+                <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+                    <div className="p-0 m-0">
+                        <Box fontSize="12px" sx={{ backgroundColor: "#009975", py: 0, px: 2, borderRadius: "9999px", display: "inline-block", fontWeight: "bold" }}>
+                            {formatCategory(post.category)}
+                        </Box>
+                    </div>
+                    <Typography fontSize="14px" sx={{ pt: 2, fontWeight: "bold", minHeight: "48px" }}>
+                        {post.title}
+                    </Typography>
+                    <Box sx={{ flexGrow: 1 }} />
+                </CardContent>
+                <CardHeader
+                    avatar={
+                        <Avatar
+                            src={userData.profilePicture}
+                            sx={{ width: 35, height: 35, border: '2px solid white', boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)' }}
+                        />
+                    }
+                    title={userData.fullName}
+                />
+            </Card>
+        </Link>
     );
 };
 

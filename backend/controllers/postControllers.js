@@ -245,6 +245,24 @@ export const getCategoryPosts = async (req, res) => {
     }
   };
 
+
+export const postsByCategory = async (req, res) => {
+    try {
+      const postsByCategory = await Post.aggregate([
+        {
+          $group: {
+            _id: "$category",
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+      res.json(postsByCategory);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+    };
+
 export const getPopularPosts = async (req, res) => {
     try {
         const posts = await Post.find().sort({ views: -1 }).limit(8)
@@ -272,3 +290,28 @@ export const getTotalNumberOfPosts = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+
+export const getPostsByMonth = async (req, res) => {
+    try {
+      const result = await Post.aggregate([
+        {
+          $project: {
+            month: { $month: "$createdAt" },
+            year: { $year: "$createdAt" }
+          }
+        },
+        {
+          $group: {
+            _id: { month: "$month", year: "$year" },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $sort: { "_id.year": 1, "_id.month": 1 }
+        }
+      ]);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  };

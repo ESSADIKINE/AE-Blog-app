@@ -8,6 +8,8 @@ import { useGetPostQuery, useUpdatePostMutation } from "../redux/posts/postsApi"
 import usePreviewImg from "../hooks/usePreviewImg"
 import { toast } from "react-toastify"
 import { categories } from "../utils/constants"
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 const UpdatePostPage = () => {
     const theme = useTheme()
@@ -134,18 +136,11 @@ const UpdatePostPage = () => {
                             value={inputs.title}
                             onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="desc"
-                            label="Description"
-                            name="desc"
-                            autoComplete="off"
-                            multiline
-                            rows={3}
+                        <ReactQuill
+                            theme="snow"
                             value={inputs.desc}
-                            onChange={(e) => setInputs({ ...inputs, desc: e.target.value })}
+                            onChange={(value) => setInputs({ ...inputs, desc: value })}
+                            style={{ height: '300px' }}
                         />
                         <IconButton onClick={() => postPictureRef.current.click()} sx={{ alignSelf: "flex-start" }}>
                             <AddPhotoAlternateIcon sx={{ width: "32px", height: "32px" }} />

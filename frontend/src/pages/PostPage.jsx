@@ -12,14 +12,11 @@ import formatCategory from "../utils/formatCategory"
 import Comment from "../components/Comment"
 import { useCreateCommentMutation, useGetPostCommentsQuery } from "../redux/comments/commentsApi"
 import { useTheme } from "@emotion/react"
-import Footer from "../components/Footer";
-
+import Footer from "../components/Footer"
 
 const PostPage = () => {
     const { user } = useSelector((state) => state.user)
-
     const theme = useTheme()
-
     const { slug } = useParams()
     const navigate = useNavigate()
 
@@ -30,28 +27,24 @@ const PostPage = () => {
     const handleClose = () => setOpen(false)
 
     // get post
-    const { data, isLoading } = useGetPostQuery(slug)
+    const { data: post, isLoading: isPostLoading, isError: isPostError } = useGetPostQuery(slug)
 
     // get user
-    const { data: userData } = useGetUserQuery({ userId: data?.userId }, { skip: !data?.userId })
+    const { data: postUser } = useGetUserQuery({ userId: post?.userId }, { skip: !post?.userId })
 
     // delete post
     const [deletePostApi, { isLoading: isDeletePostLoading }] = useDeletePostMutation()
 
     const handleDeletePost = async () => {
         try {
-            const res = await deletePostApi({ postId: data._id }).unwrap()
-
+            await deletePostApi({ postId: post._id }).unwrap()
             toast.success("Post has been successfully deleted.")
             navigate("/your-posts")
-
         } catch (error) {
             if (error.data) {
                 toast.error(error.data.error)
-                return
             } else {
                 toast.error(error.message)
-                return
             }
         }
     }
@@ -60,7 +53,7 @@ const PostPage = () => {
     const [createCommentApi, { isLoading: isCreateCommentLoading }] = useCreateCommentMutation()
 
     // get post comments
-    const { data: postCommentsData, isLoading: isPostCommentsLoading } = useGetPostCommentsQuery({ postId: data?._id }, { skip: !data?._id })
+    const { data: comments, isLoading: isCommentsLoading, isError: isCommentsError } = useGetPostCommentsQuery({ postId: post?._id }, { skip: !post?._id })
 
     const handleCreateComment = async (e) => {
         e.preventDefault()
@@ -69,47 +62,48 @@ const PostPage = () => {
             return
         }
         try {
-            const res = await createCommentApi({ comment, userId: user?._id, postId: data?._id }).unwrap()
-
+            await createCommentApi({ comment, userId: user?._id, postId: post?._id }).unwrap()
             toast.success("Comment has been created successfully.")
             setComment("")
-
         } catch (error) {
             if (error.data) {
                 toast.error(error.data.error)
-                return
             } else {
                 toast.error(error.message)
-                return
             }
         }
     }
 
     return (
-        <>
-            <Container maxWidth={"sm"} sx={{ mt: "50px", pb: "30px" }}>
-                {isLoading && (
-                    <Box display={"flex"} justifyContent={"center"}>
+        <Box display="flex" flexDirection="column" minHeight="100vh">
+            <Container maxWidth="sm" sx={{ mt: "50px", pb: "30px", flex: "1" }}>
+                {isPostLoading && (
+                    <Box display="flex" justifyContent="center">
                         <CircularProgress size={24} />
                     </Box>
                 )}
-                {!isLoading && !data && (
-                    <Typography variant="h6" textAlign={"center"}>
+                {isPostError && (
+                    <Typography variant="h6" textAlign="center">
+                        Failed to load post.
+                    </Typography>
+                )}
+                {!isPostLoading && !post && !isPostError && (
+                    <Typography variant="h6" textAlign="center">
                         Post not found.
                     </Typography>
                 )}
-                {data && (
+                {post && (
                     <>
                         <Box>
-                            <Typography sx={{ fontSize: { xs: "21px", sm: "26px" }, mb: "8px" }} fontWeight={"bold"}>
-                                {data.title}
+                            <Typography sx={{ fontSize: { xs: "21px", sm: "26px" }, mb: "8px" }} fontWeight="bold">
+                                {post.title}
                             </Typography>
-                            {data.postPicture && (
-                                <img src={data.postPicture} style={{ width: "100%", borderRadius: "8px", overflow: "hidden" }} />
+                            {post.postPicture && (
+                                <img src={post.postPicture} alt="Post" style={{ width: "100%", borderRadius: "8px", overflow: "hidden" }} />
                             )}
-                            {user?._id === data.userId && (
-                                <Stack flexDirection={"row"} alignItems={"center"} gap={2} justifyContent={"flex-end"}>
-                                    <Link to={`/update-post/${data._id}`}>
+                            {user?._id === post.userId && (
+                                <Stack flexDirection="row" alignItems="center" gap={2} justifyContent="flex-end">
+                                    <Link to={`/update-post/${post._id}`}>
                                         <IconButton sx={{ color: "#00897b" }}>
                                             <EditIcon />
                                         </IconButton>
@@ -120,36 +114,36 @@ const PostPage = () => {
                                     <DeletePostModal open={open} handleClose={handleClose} isLoading={isDeletePostLoading} handleDeletePost={handleDeletePost} />
                                 </Stack>
                             )}
-                            {userData && (
-                                <Box my={"10px"} px={1}>
-                                    <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                                        <Stack flexDirection={"row"} alignItems={"center"} gap={2}>
-                                            <Avatar src={userData.profilePicture} sx={{ width: { xs: 42, sm: 52 }, height: { xs: 42, sm: 52 } }} />
+                            {postUser && (
+                                <Box my="10px" px={1}>
+                                    <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+                                        <Stack flexDirection="row" alignItems="center" gap={2}>
+                                            <Avatar src={postUser.profilePicture} sx={{ width: { xs: 42, sm: 52 }, height: { xs: 42, sm: 52 } }} />
                                             <Typography sx={{ fontSize: { xs: "14px", sm: "17px" } }}>
-                                                {userData.fullName}
+                                                {postUser.fullName}
                                             </Typography>
                                         </Stack>
                                         <Typography sx={{ fontSize: { xs: "14px", sm: "17px" } }}>
-                                            {new Date(data.createdAt).toLocaleDateString()}
+                                            {new Date(post.createdAt).toLocaleDateString()}
                                         </Typography>
                                     </Stack>
                                 </Box>
                             )}
-                            <Stack flexDirection={"row"} alignItems={"center"} gap={2} sx={{ mt: "20px", px: 1 }}>
+                            <Stack flexDirection="row" alignItems="center" gap={2} sx={{ mt: "20px", px: 1 }}>
                                 <Typography>Category:</Typography>
                                 <Box sx={{ backgroundColor: "#311b92", p: 1, borderRadius: "9999px", color: "#ffffff" }}>
-                                    {formatCategory(data.category)}
+                                    {formatCategory(post.category)}
                                 </Box>
                             </Stack>
-                            <Typography sx={{ px: "8px", mt: "20px" }}>
-                                {data.desc}
+                            <Typography sx={{ px: "8px", mt: "20px", whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
+                                <div dangerouslySetInnerHTML={{ __html: post.desc }} />
                             </Typography>
                         </Box>
                         <Box>
-                            <Typography variant="h6" mt={"20px"} mb={"10px"}>
-                                Comments: {postCommentsData?.length}
+                            <Typography variant="h6" mt="20px" mb="10px">
+                                Comments: {comments?.length || 0}
                             </Typography>
-                            <Stack onSubmit={handleCreateComment} component={"form"} flexDirection={"row"} alignItems={"center"} gap={2}>
+                            <Stack onSubmit={handleCreateComment} component="form" flexDirection="row" alignItems="center" gap={2}>
                                 <TextField
                                     type="text"
                                     variant="standard"
@@ -169,30 +163,29 @@ const PostPage = () => {
                                     {isCreateCommentLoading ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Comment"}
                                 </Button>
                             </Stack>
-                            {isPostCommentsLoading && (
-                                <Box display={"flex"} justifyContent={"center"}>
+                            {isCommentsLoading && (
+                                <Box display="flex" justifyContent="center">
                                     <CircularProgress size={24} />
                                 </Box>
                             )}
-                            {!isPostCommentsLoading && postCommentsData?.length === 0 && (
-                                <Typography variant="h6" textAlign={"center"} mt={"20px"}>
-                                    There is no comments for this post yet.
+                            {!isCommentsLoading && comments?.length === 0 && (
+                                <Typography variant="h6" textAlign="center" mt="20px">
+                                    There are no comments for this post yet.
                                 </Typography>
                             )}
-                            {postCommentsData && (
-                                <Stack gap={3} mt={"20px"}>
-                                    {postCommentsData.map((c) => (
+                            {comments && (
+                                <Stack gap={3} mt="20px">
+                                    {comments.map((c) => (
                                         <Comment key={c._id} comment={c} />
                                     ))}
                                 </Stack>
                             )}
                         </Box>
                     </>
-
                 )}
             </Container>
             <Footer />
-        </>
+        </Box>
     )
 }
 

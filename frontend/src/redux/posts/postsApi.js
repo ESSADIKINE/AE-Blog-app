@@ -92,6 +92,20 @@ export const postsApi = api.injectEndpoints({
       }),
       providesTags: ["Posts"]
     }),
+    getPostsByMonth: builder.query({
+      query: () => ({
+        url: `${POSTS_URL}/posts-by-month`,
+        method: "GET"
+      }),
+      providesTags: ["Posts"]
+    }),
+    getPostsByCategory: builder.query({
+      query: () => ({
+        url: `${POSTS_URL}/posts-by-category`,
+        method: "GET"
+      }),
+      providesTags: ["Posts"]
+    })
   })
 });
 
@@ -106,5 +120,7 @@ export const {
   useGetSearchPostsQuery, 
   useGetPopularPostsQuery, 
   useGetTotalNumberOfPostsQuery, 
-  useGetCategoryPostsQuery // Add this line
+  useGetCategoryPostsQuery,
+  useGetPostsByMonthQuery,
+  useGetPostsByCategoryQuery
 } = postsApi;

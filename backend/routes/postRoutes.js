@@ -10,7 +10,9 @@ import {
   getTotalNumberOfPosts,
   getUserPosts,
   updatePost,
-  getCategoryPosts, // Import the new controller function
+  getCategoryPosts,
+  getPostsByMonth,
+  postsByCategory
 } from "../controllers/postControllers.js";
 import protectRoute from "../middlewares/protectRoute.js";
 
@@ -21,7 +23,9 @@ router.get("/recent", getRecentPosts);
 router.get("/popular", getPopularPosts);
 router.get("/search", getSearchPosts);
 router.get("/total", getTotalNumberOfPosts);
-router.get("/category", getCategoryPosts); // Add this line
+router.get("/category", getCategoryPosts);
+router.get("/posts-by-month", getPostsByMonth);
+router.get('/posts-by-category', postsByCategory);
 router.get("/:query", getPost);
 router.get("/user/:userId", protectRoute, getUserPosts);
 router.post("/create", protectRoute, createPost);

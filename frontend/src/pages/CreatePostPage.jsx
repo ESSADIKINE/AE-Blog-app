@@ -9,30 +9,26 @@ import { useCreatePostMutation } from "../redux/posts/postsApi"
 import { toast } from "react-toastify"
 import { categories } from "../utils/constants"
 import usePreviewImg from "../hooks/usePreviewImg"
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 const CreatePostPage = () => {
     const theme = useTheme()
-
     const navigate = useNavigate()
-
     const { user } = useSelector((state) => state.user)
-
     const { handleImgChange, previewImg, setPreviewImg } = usePreviewImg()
-
     const [inputs, setInputs] = useState({
         title: "",
         desc: "",
         category: ""
     })
     const postPictureRef = useRef(null)
-
     const [createPostApi, { isLoading }] = useCreatePostMutation()
 
     const handleCreatePost = async (e) => {
         e.preventDefault()
         try {
             const res = await createPostApi({ ...inputs, userId: user._id, postPicture: previewImg }).unwrap()
-
             toast.success("Post is created successfully.")
             setInputs({
                 title: "",
@@ -41,7 +37,6 @@ const CreatePostPage = () => {
             })
             setPreviewImg(null)
             navigate(`/post/${res.slug}`)
-            
         } catch (error) {
             if (error.data) {
                 toast.error(error.data.error)
@@ -129,17 +124,11 @@ const CreatePostPage = () => {
                             value={inputs.title}
                             onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
                         />
-                        <TextField
-                            required
-                            fullWidth
-                            id="desc"
-                            label="Description"
-                            name="desc"
-                            autoComplete="off"
-                            multiline
-                            rows={7}
+                        <ReactQuill
+                            theme="snow"
                             value={inputs.desc}
-                            onChange={(e) => setInputs({ ...inputs, desc: e.target.value })}
+                            onChange={(value) => setInputs({ ...inputs, desc: value })}
+                            style={{ height: '300px' }}
                         />
                         <IconButton onClick={() => postPictureRef.current.click()} sx={{ alignSelf: "flex-start" }}>
                             <AddPhotoAlternateIcon sx={{ width: "32px", height: "32px" }} />
