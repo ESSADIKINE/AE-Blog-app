@@ -1,19 +1,23 @@
 import * as React from 'react';
-import { Avatar, Box, Stack, Typography, Paper } from "@mui/material";
+import { Avatar, Box, Stack, Typography, Paper, IconButton, List, ListItem, ListItemAvatar, ListItemText, Divider } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PeopleIcon from '@mui/icons-material/People';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CommentIcon from '@mui/icons-material/Comment';
-import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
-import { Link } from "react-router-dom";
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Link, useNavigate } from "react-router-dom";
 import TotalNumberCard from "./TotalNumberCard";
 import { useGetTotalNumberOfCommentsQuery } from "../redux/comments/commentsApi";
-import { useGetTotalNumberOfPostsQuery, useGetPostsByMonthQuery, useGetPostsByCategoryQuery } from "../redux/posts/postsApi";
-import { useGetTotalNumberOfUsersQuery, useGetRecentUsersQuery } from "../redux/user/usersApi";
-import { useGetRecentPostsQuery } from "../redux/posts/postsApi";
+import { useGetTotalNumberOfPostsQuery, useGetPostsByMonthQuery, useGetPostsByCategoryQuery, useGetTotalViewsQuery, useGetAllPostsQuery } from "../redux/posts/postsApi";
+import { useGetTotalNumberOfUsersQuery, useGetRecentUsersQuery, useDeleteUserAccountMutation } from "../redux/user/usersApi";
 import { categories } from "../utils/constants";
-import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
+import DeleteUserFromDataGridModal from "./DeleteUserFromDataGridModal";
+import InteractiveList from "./InteractiveList";
+import { toast } from "react-toastify";
+import PostsByCategoryChart from "./PostsByCategoryChart";
+import PostsByMonthChart from "./PostsByMonthChart";
+import ViewsPerCategoryChart from "./ViewsPerCategoryChart";
 
 const DashboardHome = () => {
   const { data: commentsTotal } = useGetTotalNumberOfCommentsQuery();
@@ -21,30 +25,59 @@ const DashboardHome = () => {
   const { data: usersTotal } = useGetTotalNumberOfUsersQuery();
   const { data: postsByMonth, isFetching: isFetchingPostsByMonth } = useGetPostsByMonthQuery();
   const { data: postsByCategory } = useGetPostsByCategoryQuery();
+  const { data: totalViews } = useGetTotalViewsQuery();
+  const { data: allPosts, isLoading: isAllPostsLoading } = useGetAllPostsQuery({ page: 0, pageSize: 100 });
 
-  const { data: recentPostsData, isLoading: isRecentPostsDataLoading } = useGetRecentPostsQuery({ limit: 5 });
   const { data: recentUsersData, isLoading: isRecentUsersDataLoading } = useGetRecentUsersQuery();
+  const [deleteUserApi, { isLoading: isDeleteUserLoading }] = useDeleteUserAccountMutation();
+
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(null);
+
+  const handleOpen = (userId) => setOpenDeleteModal(userId);
+  const handleClose = () => setOpenDeleteModal(null);
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      await deleteUserApi({ _id: userId }).unwrap();
+      handleClose();
+      toast.success("User has been deleted successfully.");
+    } catch (error) {
+      toast.error(error.data?.error || error.message);
+    }
+  };
+
+  const navigate = useNavigate();
 
   const postColumns = [
     {
       field: "postPicture",
-      headerName: "Post picture",
-      width: 120,
+      headerName: "Post",
+      width: 70,
       renderCell: (params) => (
         <Link to={`/post/${params.row._id}`}>
-          <img src={params.row.postPicture} width={40} height={40} alt="Post" />
+          <img src={params.row.postPicture} width={50} height={40} alt="Post" />
         </Link>
       )
     },
     {
       field: "title",
       headerName: "Title",
-      width: 200
+      width: 250
     },
     {
-      field: "desc",
-      headerName: "Description",
-      width: 200
+      field: "views",
+      headerName: "Views",
+      width: 70
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 70,
+      renderCell: (params) => (
+        <IconButton sx={{ color: "#009975" }} onClick={() => navigate(`/post/${params.row._id}`)}>
+          <VisibilityIcon />
+        </IconButton>
+      )
     }
   ];
 
@@ -69,6 +102,26 @@ const DashboardHome = () => {
       field: "email",
       headerName: "Email Address",
       width: 240
+    },
+    {
+      field: "deleteUser",
+      headerName: "Delete",
+      width: 80,
+      renderCell: (params) => (
+        <>
+          <IconButton sx={{ color: "#009975" }} onClick={() => handleOpen(params.row._id)}>
+            <DeleteIcon />
+          </IconButton>
+          <DeleteUserFromDataGridModal
+            open={openDeleteModal === params.row._id}
+            handleClose={handleClose}
+            isLoading={isDeleteUserLoading}
+            handleDeleteUser={() => handleDeleteUser(params.row._id)}
+            rowId={params.row._id}
+            username={params.row.username}
+          />
+        </>
+      )
     }
   ];
 
@@ -85,81 +138,63 @@ const DashboardHome = () => {
     };
   });
 
+  const viewsByCategoryData = postsByCategory?.map(categoryData => ({
+    category: categories.find(cat => cat.urlName === categoryData._id)?.name || categoryData._id,
+    views: categoryData.totalViews
+  }));
+
+  const colors = [
+    "#009975",
+    "#007855",
+    "#005f3f",
+    "#004f34",
+    "#003f29",
+    "#002f1e",
+    "#001f14",
+    "#00100a",
+    "#000505"
+  ];
+
+  const sortedPostsByViews = [...(allPosts?.posts || [])].sort((a, b) => a.views - b.views);
 
   return (
     <>
       <Stack flexDirection="column">
-        <Stack flexDirection={{ md: "row", xs: "column" }} alignItems="center" flexWrap="wrap" gap={6}>
+        <Stack flexDirection={{ md: "row", xs: "column" }} alignItems="center" justifyContent="center" flexWrap="wrap" gap={6}>
           <TotalNumberCard total={usersTotal?.totalUsers} totalLastMonth={usersTotal?.totalUsersLastMonth} Icon={PeopleIcon} label="USERS" />
           <TotalNumberCard total={postsTotal?.totalPosts} totalLastMonth={postsTotal?.totalPostsLastMonth} Icon={DescriptionIcon} label="POSTS" />
           <TotalNumberCard total={commentsTotal?.totalComments} totalLastMonth={commentsTotal?.totalCommentsLastMonth} Icon={CommentIcon} label="COMMENTS" />
+          <TotalNumberCard total={totalViews?.totalViews} totalLastMonth={totalViews?.totalViews} Icon={VisibilityIcon} label="VIEWS" />
         </Stack>
 
-        <Stack flexDirection={{ md: "row", xs: "column" }} alignItems="center" justifyContent="space-around" flexWrap="wrap" gap={4} mt={4}>
-        {pieData && (
-            <Paper elevation={3} sx={{ padding: 2, borderRadius: 2, width: 600, height: 400 }}>
-              <Typography variant="h6" align="center">Posts by Category</Typography>
-              <PieChart
-                series={[
-                  {
-                    arcLabel: (item) => `${item.name} (${item.value})`,
-                    arcLabelMinAngle: 15,
-                    data: pieData.map(d => ({ ...d, label: d.name })),
-                    outerRadius: 120,
-                    paddingAngle: 1,
-                  },
-                ]}
-                sx={{
-                  [`& .${pieArcLabelClasses.root}`]: {
-                    fill: 'white',
-                    fontWeight: 'bold',
-                  },
-                }}
+        <Stack flexDirection={{ md: "row", xs: "column" }} alignItems="center" justifyContent="center" flexWrap="wrap" gap={4} mt={4}>
+          <PostsByCategoryChart pieData={pieData} colors={colors} />
+          <PostsByMonthChart chartData={chartData} />
+        </Stack>
+
+        <Stack flexDirection={{ md: "row", xs: "column" }} alignItems="center" justifyContent="center" flexWrap="wrap" gap={4} mt={4} mb= {5}>
+          <ViewsPerCategoryChart viewsByCategoryData={viewsByCategoryData} />
+          <Paper elevation={3} sx={{ py: 2, px: 2, borderRadius: 2, width: 530, height: 600 }}>
+            <Typography variant="h6" align="center">Posts by Views</Typography>
+            <Box width={{ xs: "300px", sm: "600px", lg: "500px" }} height="520px" mb="20px" mt="10px">
+              <DataGrid
+                loading={isAllPostsLoading}
+                rows={sortedPostsByViews || []}
+                getRowId={(row) => row._id}
+                columns={postColumns}
               />
-            </Paper>
-          )}
-          <Paper elevation={3} sx={{ padding: 2, borderRadius: 2, width: 600, height: 400 }}>
-            <Typography variant="h6" align="center">Posts by Month</Typography>
-            <BarChart
-              layout="vertical"
-              width={500}
-              height={330}
-              data={chartData}
-              barSize={20}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <XAxis type="number" />
-              <YAxis dataKey="month" type="category"/>
-              <Tooltip />
-              <Bar dataKey="posts" fill="#009975" label={{ position: 'right' }} />
-            </BarChart>
+            </Box>
           </Paper>
-        </Stack>
-
-        <Stack mt="20px" flexDirection="column">
-          <Typography variant="h6">Recent Users</Typography>
-          <Box width={{ xs: "300px", sm: "600px", lg: "770px" }} height="370px" mb="20px" mt="10px">
-            <DataGrid
-              loading={isRecentUsersDataLoading}
-              rows={recentUsersData || []}
-              getRowId={(row) => row._id}
-              columns={userColumns}
+          <Paper elevation={3} sx={{ py: 2, px: 2, borderRadius: 2, width: 320, height: 600 }}>
+            <InteractiveList
+              recentUsersData={recentUsersData}
+              handleClose={handleClose}
+              handleOpen={handleOpen}
+              openDeleteModal={openDeleteModal}
+              isDeleteUserLoading={isDeleteUserLoading}
+              handleDeleteUser={handleDeleteUser}
             />
-          </Box>
-          <Typography variant="h6">Recent Posts</Typography>
-          <Box width={{ xs: "300px", sm: "600px", lg: "570px" }} height="387px" mb="20px" mt="10px">
-            <DataGrid
-              loading={isRecentPostsDataLoading}
-              rows={recentPostsData || []}
-              getRowId={(row) => row._id}
-              columns={postColumns}
-            />
-          </Box>
+          </Paper>
         </Stack>
       </Stack>
     </>

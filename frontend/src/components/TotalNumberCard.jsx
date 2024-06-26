@@ -3,7 +3,7 @@ import { styled } from '@mui/system'
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
-  width: '260px',
+  width: '270px',
   borderRadius: '12px',
   backgroundColor: theme.palette.background.default,
   boxShadow: theme.shadows[3],
@@ -16,7 +16,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const TotalNumberCard = ({ total, totalLastMonth, Icon, label }) => {
   return (
-    <StyledPaper elevation={1}>
+    <StyledPaper elevation={1} sx={{p:3}} >
       <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"space-between"}>
         <Typography variant="subtitle1" color="textSecondary">
           TOTAL {label}

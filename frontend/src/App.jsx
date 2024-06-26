@@ -14,6 +14,9 @@ import DashboardUsers from "./components/DashboardUsers";
 import DashboardPosts from "./components/DashboardPosts";
 import DashboardComments from "./components/DashboardComments";
 import DashboardHome from "./components/DashboardHome";
+import ViewsPerCategoryPage from "./pages/ViewsPerCategoryPage";
+import PostsByMonthPage from "./pages/PostsByMonthPage";
+import PostsByCategoryPage from "./pages/PostsByCategoryPage";
 import HeaderLayout from "./layouts/HeaderLayout";
 import { ThemeProvider, createTheme } from "@mui/material";
 import CssBaseline from '@mui/material/CssBaseline';
@@ -53,16 +56,19 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/category" element={<CategoryPage />} />
-            <Route path="/your-posts" element={user ? <YourPostsPage /> : <Navigate to={"/signin"} />} />
-            <Route path="/update-post/:postId" element={user ? <UpdatePostPage /> : <Navigate to={"/signin"} />} />
-            <Route path="/create-post" element={user ? <CreatePostPage /> : <Navigate to={"/signin"} />} />
+            <Route path="/your-posts" element={user ? <YourPostsPage /> : <Navigate to="/signin" />} />
+            <Route path="/update-post/:postId" element={user ? <UpdatePostPage /> : <Navigate to="/signin" />} />
+            <Route path="/create-post" element={user ? <CreatePostPage /> : <Navigate to="/signin" />} />
             <Route path="/post/:slug" element={<PostPage />} />
-            <Route path="/profile/:username" element={user ? <ProfilePage /> : <Navigate to={"/signin"} />} />
-            <Route path="/dashboard" element={user?.isAdmin ? <DashboardPage /> : <Navigate to={"/signin"} />}>
-              <Route index element={user?.isAdmin ? <DashboardHome /> : <Navigate to={"/signin"} />} />
-              <Route path="users" element={user?.isAdmin ? <DashboardUsers /> : <Navigate to={"/signin"} />} />
-              <Route path="posts" element={user?.isAdmin ? <DashboardPosts /> : <Navigate to={"/signin"} />} />
-              <Route path="comments" element={user?.isAdmin ? <DashboardComments /> : <Navigate to={"/signin"} />} />
+            <Route path="/profile/:username" element={user ? <ProfilePage /> : <Navigate to="/signin" />} />
+            <Route path="/dashboard" element={user?.isAdmin ? <DashboardPage /> : <Navigate to="/signin" />}>
+              <Route index element={user?.isAdmin ? <DashboardHome /> : <Navigate to="/signin" />} />
+              <Route path="users" element={user?.isAdmin ? <DashboardUsers /> : <Navigate to="/signin" />} />
+              <Route path="posts" element={user?.isAdmin ? <DashboardPosts /> : <Navigate to="/signin" />} />
+              <Route path="comments" element={user?.isAdmin ? <DashboardComments /> : <Navigate to="/signin" />} />
+              <Route path="views-per-category" element={user?.isAdmin ? <ViewsPerCategoryPage /> : <Navigate to="/signin" />} />
+              <Route path="posts-by-month" element={user?.isAdmin ? <PostsByMonthPage /> : <Navigate to="/signin" />} />
+              <Route path="posts-by-category" element={user?.isAdmin ? <PostsByCategoryPage /> : <Navigate to="/signin" />} />
             </Route>
           </Route>
           <Route path="/signup" element={<SignUpPage />} />

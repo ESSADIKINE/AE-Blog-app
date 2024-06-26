@@ -246,22 +246,23 @@ export const getCategoryPosts = async (req, res) => {
   };
 
 
-export const postsByCategory = async (req, res) => {
+  export const postsByCategory = async (req, res) => {
     try {
-      const postsByCategory = await Post.aggregate([
-        {
-          $group: {
-            _id: "$category",
-            count: { $sum: 1 }
-          }
-        }
-      ]);
-      res.json(postsByCategory);
+        const postsByCategory = await Post.aggregate([
+            {
+                $group: {
+                    _id: "$category",
+                    count: { $sum: 1 },
+                    totalViews: { $sum: "$views" }
+                }
+            }
+        ]);
+        res.json(postsByCategory);
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Server error');
+        console.error(error);
+        res.status(500).send('Server error');
     }
-    };
+};
 
 export const getPopularPosts = async (req, res) => {
     try {
@@ -315,3 +316,17 @@ export const getPostsByMonth = async (req, res) => {
       res.status(500).send(error);
     }
   };
+
+  export const getTotalViews = async (req, res) => {
+    try {
+        const totalViews = await Post.aggregate([
+            { $group: { _id: null, totalViews: { $sum: "$views" } } },
+            { $project: { _id: 0, totalViews: 1 } }
+        ]);
+
+        res.status(200).json(totalViews[0]);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};

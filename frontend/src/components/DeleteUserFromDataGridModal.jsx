@@ -16,7 +16,7 @@ const DeleteUserFromDataGridModal = ({ open, handleClose, isLoading, handleDelet
                     </Typography>
                     <Stack flexDirection={"row"} mt={3} alignItems={"center"} gap={3} justifyContent={"flex-end"}>
                         <Button onClick={() => handleDeleteUser(rowId)} disabled={isLoading} variant="contained" sx={{ backgroundColor: "#f44336", color: "#ffffff", "&:hover": {
-                            backgroundColor: "#d32f2f"
+                            backgroundColor: "#009975"
                         }, fontSize: {xs: "13px", sm: "15px"}, width: "80px", height: "37px", "&.Mui-disabled": {
                             backgroundColor: "#f44336"
                         }}}>

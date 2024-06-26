@@ -104,11 +104,11 @@ const PostPage = () => {
                             {user?._id === post.userId && (
                                 <Stack flexDirection="row" alignItems="center" gap={2} justifyContent="flex-end">
                                     <Link to={`/update-post/${post._id}`}>
-                                        <IconButton sx={{ color: "#00897b" }}>
+                                        <IconButton sx={{ color: "#009975" }}>
                                             <EditIcon />
                                         </IconButton>
                                     </Link>
-                                    <IconButton onClick={handleOpen} sx={{ color: "#d32f2f" }}>
+                                    <IconButton onClick={handleOpen} sx={{ color: "#009975" }}>
                                         <DeleteIcon />
                                     </IconButton>
                                     <DeletePostModal open={open} handleClose={handleClose} isLoading={isDeletePostLoading} handleDeletePost={handleDeletePost} />
@@ -131,7 +131,7 @@ const PostPage = () => {
                             )}
                             <Stack flexDirection="row" alignItems="center" gap={2} sx={{ mt: "20px", px: 1 }}>
                                 <Typography>Category:</Typography>
-                                <Box sx={{ backgroundColor: "#311b92", p: 1, borderRadius: "9999px", color: "#ffffff" }}>
+                                <Box sx={{ backgroundColor: "#009975", py: 1, px: 2, borderRadius: "9999px", color: "#ffffff" }}>
                                     {formatCategory(post.category)}
                                 </Box>
                             </Stack>

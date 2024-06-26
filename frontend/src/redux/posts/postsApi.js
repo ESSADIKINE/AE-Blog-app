@@ -1,3 +1,4 @@
+// In postsApi.js
 import { api } from "../api";
 const POSTS_URL = "/api/posts";
 
@@ -105,6 +106,13 @@ export const postsApi = api.injectEndpoints({
         method: "GET"
       }),
       providesTags: ["Posts"]
+    }),
+    getTotalViews: builder.query({
+      query: () => ({
+        url: `${POSTS_URL}/total-views`,
+        method: "GET"
+      }),
+      providesTags: ["Posts"]
     })
   })
 });
@@ -122,5 +130,6 @@ export const {
   useGetTotalNumberOfPostsQuery, 
   useGetCategoryPostsQuery,
   useGetPostsByMonthQuery,
-  useGetPostsByCategoryQuery
+  useGetPostsByCategoryQuery,
+  useGetTotalViewsQuery // Make sure this line is included
 } = postsApi;

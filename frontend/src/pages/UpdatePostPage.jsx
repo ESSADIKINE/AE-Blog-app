@@ -140,7 +140,7 @@ const UpdatePostPage = () => {
                             theme="snow"
                             value={inputs.desc}
                             onChange={(value) => setInputs({ ...inputs, desc: value })}
-                            style={{ height: '300px' }}
+                            style={{ height: '300px', marginBottom: '30px' }}
                         />
                         <IconButton onClick={() => postPictureRef.current.click()} sx={{ alignSelf: "flex-start" }}>
                             <AddPhotoAlternateIcon sx={{ width: "32px", height: "32px" }} />
@@ -158,7 +158,7 @@ const UpdatePostPage = () => {
                             "&.Mui-disabled": {
                                 backgroundColor: theme.palette.primary.main
                             },
-                            my:2
+                            mb:3
                         }}>
                             {isLoading ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Update Post"}
                         </Button>

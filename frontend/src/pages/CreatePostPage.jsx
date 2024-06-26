@@ -128,10 +128,10 @@ const CreatePostPage = () => {
                             theme="snow"
                             value={inputs.desc}
                             onChange={(value) => setInputs({ ...inputs, desc: value })}
-                            style={{ height: '300px' }}
+                            style={{ height: '300px', marginBottom: '30px' }}
                         />
                         <IconButton onClick={() => postPictureRef.current.click()} sx={{ alignSelf: "flex-start" }}>
-                            <AddPhotoAlternateIcon sx={{ width: "32px", height: "32px" }} />
+                            <AddPhotoAlternateIcon sx={{ width: "32px", height: "32px"}} />
                         </IconButton>
                         <input type="file" hidden ref={postPictureRef} onChange={handleImgChange} />
                         {previewImg && (
@@ -143,6 +143,7 @@ const CreatePostPage = () => {
                             </Box>
                         )}
                         <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{
+                            mb:3,
                             "&.Mui-disabled": {
                                 backgroundColor: theme.palette.primary.main
                             }

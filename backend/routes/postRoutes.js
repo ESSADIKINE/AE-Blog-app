@@ -12,7 +12,8 @@ import {
   updatePost,
   getCategoryPosts,
   getPostsByMonth,
-  postsByCategory
+  postsByCategory,
+  getTotalViews
 } from "../controllers/postControllers.js";
 import protectRoute from "../middlewares/protectRoute.js";
 
@@ -26,6 +27,7 @@ router.get("/total", getTotalNumberOfPosts);
 router.get("/category", getCategoryPosts);
 router.get("/posts-by-month", getPostsByMonth);
 router.get('/posts-by-category', postsByCategory);
+router.get("/total-views", getTotalViews);
 router.get("/:query", getPost);
 router.get("/user/:userId", protectRoute, getUserPosts);
 router.post("/create", protectRoute, createPost);

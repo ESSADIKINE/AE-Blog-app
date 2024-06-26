@@ -16,7 +16,7 @@ const DeleteCommentModal = ({ open, handleClose, handleDeleteComment, isLoading 
                     </Typography>
                     <Stack flexDirection={"row"} mt={3} alignItems={"center"} gap={3} justifyContent={"flex-end"}>
                         <Button onClick={handleDeleteComment} disabled={isLoading} variant="contained" sx={{ backgroundColor: "#f44336", color: "#ffffff", "&:hover": { backgroundColor: "#d32f2f"}, fontSize: {xs: "13px", sm: "15px"}, width: "80px", height: "37px", "&.Mui-disabled": {
-                            backgroundColor: "#f44336"
+                            backgroundColor: "#009975"
                         }}}>
                             {isLoading ? <CircularProgress size={16} sx={{ color: "#ffffff"}}/> : "Delete"}
                         </Button>

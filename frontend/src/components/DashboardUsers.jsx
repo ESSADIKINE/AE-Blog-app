@@ -1,102 +1,122 @@
-import { DataGrid } from "@mui/x-data-grid"
-import { useDeleteUserAccountMutation, useGetAllUsersQuery } from "../redux/user/usersApi"
-import { useEffect, useState } from "react"
-import { Avatar, Box, IconButton } from "@mui/material"
-import DeleteIcon from '@mui/icons-material/Delete'
-import { toast } from "react-toastify"
-import DeleteUserFromDataGridModal from "./DeleteUserFromDataGridModal"
+import { DataGrid } from "@mui/x-data-grid";
+import { useDeleteUserAccountMutation, useGetAllUsersQuery } from "../redux/user/usersApi";
+import { useEffect, useState } from "react";
+import { Avatar, Box, IconButton } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { toast } from "react-toastify";
+import DeleteUserFromDataGridModal from "./DeleteUserFromDataGridModal";
+import { useNavigate } from "react-router-dom";
 
 const DashboardUsers = () => {
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 5
-    })
-    const [rowCountState, setRowCountState] = useState(0)
-    const [openDeleteModal, setOpenDeleteModal] = useState(null)
+        pageSize: 10
+    });
+    const [rowCountState, setRowCountState] = useState(0);
+    const [openDeleteModal, setOpenDeleteModal] = useState(null);
+    const navigate = useNavigate();
 
-    const handleOpen = (userId) => setOpenDeleteModal(userId)
-    const handleClose = () => setOpenDeleteModal(null)
+    const handleOpen = (userId) => setOpenDeleteModal(userId);
+    const handleClose = () => setOpenDeleteModal(null);
 
     // get all users
-    const { data, isLoading } = useGetAllUsersQuery(paginationModel)
+    const { data, isLoading } = useGetAllUsersQuery(paginationModel);
 
     // delete user
-    const [ deleteUserApi, { isLoading: isDeleteUserLoading } ] = useDeleteUserAccountMutation()
+    const [deleteUserApi, { isLoading: isDeleteUserLoading }] = useDeleteUserAccountMutation();
 
     useEffect(() => {
-        if(data) {
-            setRowCountState(data.totalUsers)
+        if (data) {
+            setRowCountState(data.totalUsers);
         }
-    }, [data, setRowCountState])
+    }, [data]);
 
     const handleDeleteUserFromDataGrid = async (userId) => {
         try {
-            const res = await deleteUserApi({ _id: userId }).unwrap()
-            
-            handleClose()
-            toast.success("User has been deleted successfully.")
-            
-        } catch(error) {
-            if(error.data) {
-                toast.error(error.data.error)
-                return
-            } else {
-                toast.error(error.message)
-                return
-            }
+            await deleteUserApi({ _id: userId }).unwrap();
+            handleClose();
+            toast.success("User has been deleted successfully.");
+        } catch (error) {
+            toast.error(error.data?.error || error.message);
         }
-    }
+    };
 
     const columns = [
         {
             field: "profilePicture",
             headerName: "Profile picture",
             width: 120,
-            renderCell: (params) => {
-                return (
-                    <Avatar src={params.row.profilePicture}/>
-                )
-            }
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => <Avatar src={params.row.profilePicture} />
         },
         {
             field: "_id",
             headerName: "ID",
-            width: 210
-        }, 
+            width: 220,
+            headerAlign: 'center',
+            align: 'center'
+        },
         {
             field: "fullName",
-            headerName: "Full Name", 
-            width: 200
+            headerName: "Full Name",
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
         },
         {
             field: "username",
-            headerName: "Username", 
-            width: 200
+            headerName: "Username",
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
         },
         {
             field: "email",
-            headerName: "Email Address", 
-            width: 240
+            headerName: "Email Address",
+            width: 240,
+            headerAlign: 'center',
+            align: 'center'
         },
         {
             field: "deleteUser",
             headerName: "Delete",
-            width: 80,
-            renderCell: (params) => {
-                return (
-                    <>
-                        <IconButton sx={{ color: "#d32f2f"}} onClick={() => handleOpen(params.row._id)}>
-                            <DeleteIcon />
-                        </IconButton>
-                        <DeleteUserFromDataGridModal open={openDeleteModal === params.row._id} handleClose={handleClose} isLoading={isDeleteUserLoading} handleDeleteUser={handleDeleteUserFromDataGrid} rowId={params.row._id} username={params.row.username}/>
-                    </>
-                )
-            }
+            width: 100,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => (
+                <>
+                    <IconButton sx={{ color: "#d32f2f" }} onClick={() => handleOpen(params.row._id)}>
+                        <DeleteIcon />
+                    </IconButton>
+                    <DeleteUserFromDataGridModal 
+                        open={openDeleteModal === params.row._id} 
+                        handleClose={handleClose} 
+                        isLoading={isDeleteUserLoading} 
+                        handleDeleteUser={() => handleDeleteUserFromDataGrid(params.row._id)} 
+                        rowId={params.row._id} 
+                        username={params.row.username} 
+                    />
+                </>
+            )
+        },
+        {
+            field: "view",
+            headerName: "View",
+            width: 100,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => (
+                <IconButton sx={{ color: "#009975" }} onClick={() => navigate(`/user/${params.row._id}`)}>
+                    <VisibilityIcon />
+                </IconButton>
+            )
         }
-    ]
+    ];
 
     return (
-        <Box width={{ xs: "300px", sm: "600px", lg: "940px"}} height={"370px"}>
+        <Box height={"80vh"} mx={5}>
             <DataGrid 
                 loading={isLoading}
                 getRowId={(row) => row._id}
@@ -109,7 +129,7 @@ const DashboardUsers = () => {
                 pageSizeOptions={[5, 10, 20, 50, 100]}
             />
         </Box>
-    )
-}
+    );
+};
 
-export default DashboardUsers
+export default DashboardUsers;
