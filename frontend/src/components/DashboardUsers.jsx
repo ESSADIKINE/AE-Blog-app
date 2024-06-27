@@ -87,7 +87,7 @@ const DashboardUsers = () => {
             align: 'center',
             renderCell: (params) => (
                 <>
-                    <IconButton sx={{ color: "#d32f2f" }} onClick={() => handleOpen(params.row._id)}>
+                    <IconButton sx={{ color: "#009975" }} onClick={() => handleOpen(params.row._id)}>
                         <DeleteIcon />
                     </IconButton>
                     <DeleteUserFromDataGridModal 

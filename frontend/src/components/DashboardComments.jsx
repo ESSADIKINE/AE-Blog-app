@@ -83,17 +83,19 @@ const DashboardComments = () => {
     },
     {
       field: "postPicture",
-      headerName: "For Post",
+      headerName: "Post",
       width: 200,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
-        const postPicture = params.row.postId.postPicture;
+        const postPicture = params.row.postId?.postPicture;
 
-        return (
+        return postPicture ? (
           <Link to={`/post/${params.row.postId._id}`}>
             <img src={postPicture} width={60} height={40} alt="Post" />
           </Link>
+        ) : (
+          <Typography>No Post</Typography>
         );
       }
     },

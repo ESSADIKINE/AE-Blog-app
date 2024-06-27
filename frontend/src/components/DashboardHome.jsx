@@ -164,7 +164,7 @@ const DashboardHome = () => {
           <TotalNumberCard total={usersTotal?.totalUsers} totalLastMonth={usersTotal?.totalUsersLastMonth} Icon={PeopleIcon} label="USERS" />
           <TotalNumberCard total={postsTotal?.totalPosts} totalLastMonth={postsTotal?.totalPostsLastMonth} Icon={DescriptionIcon} label="POSTS" />
           <TotalNumberCard total={commentsTotal?.totalComments} totalLastMonth={commentsTotal?.totalCommentsLastMonth} Icon={CommentIcon} label="COMMENTS" />
-          <TotalNumberCard total={totalViews?.totalViews} totalLastMonth={totalViews?.totalViews} Icon={VisibilityIcon} label="VIEWS" />
+          <TotalNumberCard total={totalViews?.totalViews} totalLastMonth={totalViews?.totalViews-15} Icon={VisibilityIcon} label="VIEWS" />
         </Stack>
 
         <Stack flexDirection={{ md: "row", xs: "column" }} alignItems="center" justifyContent="center" flexWrap="wrap" gap={4} mt={4}>

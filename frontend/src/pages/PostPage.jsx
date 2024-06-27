@@ -76,7 +76,7 @@ const PostPage = () => {
 
     return (
         <Box display="flex" flexDirection="column" minHeight="100vh">
-            <Container maxWidth="sm" sx={{ mt: "50px", pb: "30px", flex: "1" }}>
+            <Container maxWidth="md" sx={{ mt: "50px", pb: "30px", flex: "1" }}>
                 {isPostLoading && (
                     <Box display="flex" justifyContent="center">
                         <CircularProgress size={24} />

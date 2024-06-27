@@ -29,7 +29,7 @@ const PostsByCategoryPage = () => {
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
-      <Box width={1000} height={600}>
+      <Box width={1000} height={540}>
         <Typography variant="h4" align="center" mb={4}>Posts by Category</Typography>
         <PieChart
           series={[
@@ -37,7 +37,7 @@ const PostsByCategoryPage = () => {
               arcLabel: (item) => `${item.name} (${item.value})`,
               arcLabelMinAngle: 15,
               data: pieData.map((d, i) => ({ ...d, label: d.name, color: colors[i % colors.length] })),
-              outerRadius: 120,
+              outerRadius: 180,
             },
           ]}
           sx={{

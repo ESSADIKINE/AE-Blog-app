@@ -72,7 +72,7 @@ const HomePage = () => {
               </Typography>
               <Typography variant="h5" color="inherit" sx={{ mb: 5 }} paragraph>
                 A place for exploring new ideas and insights. Discover engaging articles on a wide range of topics.</Typography>
-              <Link to="#" style={{ pl: 4, textDecoration: 'none', color: '#009975' }}>
+              <Link to="/post/anass-essadikine--pioneering-web-development-and-data-analysis-and-bi-for-digital-transformation" style={{ pl: 4, textDecoration: 'none', color: '#009975' }}>
                 Continue reading…
               </Link>
             </Box>
