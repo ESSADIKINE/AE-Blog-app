@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=Secret-Key-blog
+      - MONGO_DB_URI=mongodb+srv://anasessadikine1:h0vavjqfmiF1bZre@cluster0.18af5xe.mongodb.net/AnassBlog
+      - CLOUDINARY_CLOUD_NAME=drn9pvlhp
+      - CLOUDINARY_API_KEY=839422953975122
+      - CLOUDINARY_API_SECRET=y2sUhworAp4Ht8iB4iWc2K4T3Zc
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
