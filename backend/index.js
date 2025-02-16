@@ -29,12 +29,11 @@ app.use("/api/users", userRoutes)
 app.use("/api/posts", postRoutes)
 app.use("/api/comments", commentRoutes)
 
-// Corrected Static File Serving
-app.use(express.static(path.join(__dirname, "../frontend"))); 
+app.use(express.static(path.join(__dirname, "/frontend/dist")))
 
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "index.html"));
-});
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
+})
 
 const PORT = process.env.PORT || 6001
 connectToMongoDB()
