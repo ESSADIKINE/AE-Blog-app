@@ -12,21 +12,9 @@ pipeline {
             }
         }
 
-        stage('Build Frontend Docker Image') {
+        stage('Build and Run Containers') {
             steps {
-                sh 'docker build -t ${IMAGE_NAME}-frontend ./frontend'
-            }
-        }
-
-        stage('Build Backend Docker Image') {
-            steps {
-                sh 'docker build --build-arg FRONTEND_IMAGE=${IMAGE_NAME}-frontend -t ${IMAGE_NAME}-backend ./backend'
-            }
-        }
-
-        stage('Run Containers') {
-            steps {
-                sh 'docker-compose up -d'
+                sh 'docker-compose up --build -d'
             }
         }
 
