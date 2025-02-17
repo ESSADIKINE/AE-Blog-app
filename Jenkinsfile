@@ -8,25 +8,15 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/ESSADIKINE/AE-Blog-app.git'
+                git 'https://github.com/ESSADIKINE/AE-Blog-app.git'
             }
         }
 
-        stage('Build Frontend Docker Image') {
+        stage('Build and Run Containers') {
             steps {
-                sh 'docker build -t ${IMAGE_NAME}-frontend ./frontend'
-            }
-        }
-
-        stage('Build Backend Docker Image') {
-            steps {
-                sh 'docker build --build-arg FRONTEND_IMAGE=${IMAGE_NAME}-frontend -t ${IMAGE_NAME}-backend ./backend'
-            }
-        }
-
-        stage('Run Containers') {
-            steps {
-                sh 'docker-compose up -d'
+                sh 'docker-compose down' // Stop old containers
+                sh 'docker-compose build' // Build all services
+                sh 'docker-compose up -d' // Run in detached mode
             }
         }
 
